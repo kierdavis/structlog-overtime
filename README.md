@@ -10,6 +10,7 @@ having to defer to standard library logging.
 * [FilterMethods](./structlog_overtime/filter.py): filter events based on the method that was called (i.e. filter by log level)
 * [FilterKeys](./structlog_overtime/filter.py): adjust which fields are included in your event dicts
 * [TimezoneAwareTimeStamper](./structlog_overtime/timestamper.py): make your timestamps explicitly include a timezone
+* [bind](./structlog_overtime/bind.py): type-preserving wrapper around BoundLogger.bind
 * [noop](./structlog_overtime/noop.py): a processor that gloriously does nothing
 
 ## The name?

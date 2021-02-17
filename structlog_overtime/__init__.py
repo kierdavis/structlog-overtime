@@ -1,3 +1,4 @@
+from .bind import bind
 from .filter import (
     FilterKeys,
     FilterMethods,
@@ -12,6 +13,7 @@ from .tee import ConfigurationError, TeeLoggerFactory, TeeOutput
 from .timestamper import TimezoneAwareTimeStamper
 
 __all__ = [
+    "bind",
     "ConfigurationError",
     "FilterKeys",
     "FilterMethods",
