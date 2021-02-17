@@ -26,6 +26,7 @@ setup(
     extras_require={
         "dev": [
             "black",
+            "devpi",
             "flake8",
             "isort",
             "mypy",
