@@ -1,19 +1,21 @@
+from pathlib import Path
 from setuptools import find_packages, setup
 
 setup(
     name="structlog-overtime",
     version="0.1",
-    # description="...",
+    description="Miscellaneous utilities for structlog",
+    long_description=Path(__file__).resolve().parent.joinpath("README.md").read_text(),
+    long_description_content_type="text/markdown",
     author="Kier Davis",
     author_email="me@kierdavis.com",
-    # url="...",
+    url="https://github.com/kierdavis/structlog-overtime",
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Typing :: Typed",
-        # ...
     ],
     packages=find_packages(exclude=["tests", "stubs"]),
     include_package_data=True,
@@ -32,9 +34,9 @@ setup(
             "mypy",
             "pytest",
             "pytest-cov",
+            "setuptools>=38.6.0",  # for long_description_content_type support
             "testfixtures",
             "wheel",
-            # ...
         ],
     },
 )
