@@ -1,19 +1,23 @@
-from typing import Any, Collection, Dict
+from typing import Any, Callable, Dict
 
 import structlog
 
-__all__ = ["FilterMethodName", "FilterKeys"]
+__all__ = [
+    "FilterKeys",
+    "FilterMethods",
+    "exclude_keys",
+    "exclude_methods",
+    "only_keys",
+    "only_methods",
+]
 
 
-class FilterMethodName:
+class FilterMethods:
     def __init__(
         self,
-        *,
-        include_only: Collection[str] = frozenset(),
-        exclude: Collection[str] = frozenset(),
+        predicate: Callable[[str], bool],
     ):
-        self.include_only = include_only
-        self.exclude = exclude
+        self.predicate = predicate
 
     def __call__(
         self,
@@ -21,22 +25,26 @@ class FilterMethodName:
         method_name: str,
         event_dict: Dict[str, Any],
     ) -> "structlog._ProcessorReturnType":
-        if self.include_only and method_name not in self.include_only:
+        if self.predicate(method_name):
+            return event_dict
+        else:
             raise structlog.DropEvent
-        if method_name in self.exclude:
-            raise structlog.DropEvent
-        return event_dict
+
+
+def only_methods(*names: str) -> FilterMethods:
+    return FilterMethods(lambda name: name in names)
+
+
+def exclude_methods(*names: str) -> FilterMethods:
+    return FilterMethods(lambda name: name not in names)
 
 
 class FilterKeys:
     def __init__(
         self,
-        *,
-        include_only: Collection[str] = frozenset(),
-        exclude: Collection[str] = frozenset(),
+        predicate: Callable[[str], bool],
     ):
-        self.include_only = include_only
-        self.exclude = exclude
+        self.predicate = predicate
 
     def __call__(
         self,
@@ -44,9 +52,15 @@ class FilterKeys:
         method_name: str,
         event_dict: Dict[str, Any],
     ) -> "structlog._ProcessorReturnType":
-        keys_to_delete = set(event_dict.keys()) & set(self.exclude)
-        if self.include_only:
-            keys_to_delete |= set(event_dict.keys()) - set(self.include_only)
-        for key in keys_to_delete:
-            del event_dict[key]
+        for key in set(event_dict.keys()):
+            if not self.predicate(key):
+                del event_dict[key]
         return event_dict
+
+
+def only_keys(*names: str) -> FilterKeys:
+    return FilterKeys(lambda name: name in names)
+
+
+def exclude_keys(*names: str) -> FilterKeys:
+    return FilterKeys(lambda name: name not in names)
