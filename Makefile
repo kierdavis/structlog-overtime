@@ -1,15 +1,15 @@
 # Path containing source code of the Python package:
 PACKAGE_PATH := structlog_overtime
 # All paths containing Python code to typecheck
-TYPECHECKED_PYTHON_PATHS := $(PACKAGE_PATH) tests tools/extract_snippets.py extracted_snippets
+TYPECHECKED_PYTHON_PATHS := $(PACKAGE_PATH) tests
 # All paths containing Python code to format:
-FORMATTED_PYTHON_PATHS := $(PACKAGE_PATH) tests stubs setup.py tools/extract_snippets.py
+FORMATTED_PYTHON_PATHS := $(PACKAGE_PATH) tests stubs setup.py
 # All paths containing Python code to lint:
-LINTED_PYTHON_PATHS := $(PACKAGE_PATH) tests stubs setup.py tools/extract_snippets.py extracted_snippets
+LINTED_PYTHON_PATHS := $(PACKAGE_PATH) tests stubs setup.py
 
 all: typecheck test format lint
 
-typecheck: extract_snippets
+typecheck:
 	mypy $(TYPECHECKED_PYTHON_PATHS)
 
 test:
@@ -25,6 +25,3 @@ black:
 
 lint:
 	flake8 $(LINTED_PYTHON_PATHS)
-
-extract_snippets:
-	tools/extract_snippets.py README.md extracted_snippets
