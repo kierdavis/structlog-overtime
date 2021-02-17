@@ -8,6 +8,13 @@ __all__ = ["TeeOutput", "TeeLoggerFactory", "ConfigurationError"]
 
 @dataclass
 class TeeOutput:
+    """
+    A specification of a destination that a TeeLoggerFactory should send
+    log events to. A chain of destination-specific processors can be
+    applied before the log event ultimately makes it way to a logger created
+    from the underlying factory.
+    """
+
     logger_factory: "structlog._LoggerFactory"
     processors: Sequence["structlog._Processor"] = field(default_factory=list)
 
@@ -41,6 +48,38 @@ _ensure_logger_implements_protocol: Type["structlog._UnderlyingLogger"] = TeeLog
 
 
 class TeeLoggerFactory:
+    """
+    A logger factory that duplicates events to multiple destinations.
+
+    For example, the following code sets up structlog to send events to both
+    the console and a JSON file:
+
+        import structlog, structlog_overtime, sys
+
+        structlog.configure(
+          # The default list of processors contains a ConsoleRenderer, but
+          # TeeLoggerFactory cannot operate on rendered events so we must
+          # remove it.
+          processors=[
+            structlog.processors.StackInfoRenderer(),
+            structlog.dev.set_exc_info,
+            structlog.processors.format_exc_info,
+            structlog.processors.TimeStamper(),
+          ],
+
+          logger_factory=structlog_overtime.TeeLoggerFactory(
+            structlog_overtime.TeeOutput(
+              processors=[structlog.dev.ConsoleRenderer(colors=sys.stderr.isatty())],
+              logger_factory=structlog.PrintLoggerFactory(sys.stderr),
+            ),
+            structlog_overtime.TeeOutput(
+              processors=[structlog.processors.JSONRenderer()],
+              logger_factory=structlog.PrintLoggerFactory(open("test.log", "a")),
+            ),
+          ),
+        )
+    """
+
     def __init__(self, *outputs: TeeOutput):
         self.outputs = outputs
 

@@ -1,41 +1,16 @@
 # structlog-overtime
 
-Utilities for structlog.
+Utilities for structlog with the goal of enabling complex use cases without
+having to defer to standard library logging.
 
 ## Features
 
-### Tee
-
-`TeeLoggerFactory` lets you send events to multiple underlying loggers.
-For example, you may want to send log events both to the console and to a file:
-
-```python
-import structlog, structlog_overtime, sys  # noqa: E401
-
-structlog.configure(
-  # The default list of processors contains a ConsoleRenderer, but
-  # TeeLoggerFactory cannot operate on rendered events so we need to
-  # override it.
-  processors=[
-    structlog.processors.StackInfoRenderer(),
-    structlog.dev.set_exc_info,
-    structlog.processors.format_exc_info,
-    structlog.processors.TimeStamper(),
-  ],
-
-  logger_factory=structlog_overtime.TeeLoggerFactory(
-    structlog_overtime.TeeOutput(
-      processors=[structlog.dev.ConsoleRenderer(colors=sys.stderr.isatty())],
-      logger_factory=structlog.PrintLoggerFactory(sys.stderr),
-    ),
-    structlog_overtime.TeeOutput(
-      processors=[structlog.processors.JSONRenderer()],
-      logger_factory=structlog.PrintLoggerFactory(open("test.log", "a")),
-    ),
-  ),
-)
-structlog.get_logger().info("Hello, world!", data=123)
-```
+* [TeeLoggerFactory](./structlog_overtime/tee.py): copy events to multiple destinations (e.g. console and file)
+* [MockLoggerFactory](./structlog_overtime/mock.py): accumulates events in a list (useful for tests)
+* [FilterMethods](./structlog_overtime/filter.py): filter events based on the method that was called (i.e. filter by log level)
+* [FilterKeys](./structlog_overtime/filter.py): adjust which fields are included in your event dicts
+* [TimezoneAwareTimeStamper](./structlog_overtime/timestamper.py): make your timestamps explicitly include a timezone
+* [noop](./structlog_overtime/noop.py): a processor that gloriously does nothing
 
 ## Development
 
