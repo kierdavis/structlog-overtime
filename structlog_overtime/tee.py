@@ -23,7 +23,14 @@ class TeeLogger:
         self.destinations = destinations
 
     def __getattr__(self, method_name: str) -> Any:
-        def f(**event_dict: Any) -> None:
+        def f(*args_from_renderer: Any, **event_dict: Any) -> None:
+            if len(args_from_renderer):
+                raise NotImplementedError(
+                    "TeeLoggerFactory cannot operate on events that have "
+                    "already been processed by a Renderer. Please place "
+                    "the Renderer in the per-output processor lists instead "
+                    "of the top-level list passed to structlog.configure."
+                )
             for destination in self.destinations:
                 getattr(destination, method_name)(**event_dict.copy())
 
