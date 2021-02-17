@@ -19,7 +19,7 @@ setup(
     include_package_data=True,
     python_requires=">= 3.6",
     install_requires=[
-        "dataclasses",
+        "dataclasses; python_version < '3.7'",
         "structlog",
         # ...
     ],
