@@ -22,7 +22,7 @@ https://www.youtube.com/watch?v=GnEmD17kYsE
 ### Running the tests
 
 ```sh
-git clone git@git:kdavis/structlog-overtime.git
+git clone git@github.com:kierdavis/structlog-overtime.git
 cd structlog-overtime
 python3 -m venv .venv
 source .venv/bin/activate

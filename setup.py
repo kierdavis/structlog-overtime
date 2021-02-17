@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="structlog-overtime",
-    version="1.0",
+    version="1.0.1",
     description="Miscellaneous utilities for structlog",
     long_description=Path(__file__).resolve().parent.joinpath("README.md").read_text(),
     long_description_content_type="text/markdown",
