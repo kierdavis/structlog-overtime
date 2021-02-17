@@ -13,3 +13,5 @@ class ConsoleRenderer(_Processor):
             Dict[str, Any]
         ] = None,  # value type is actually a colorama style, but cba to create stubs for that package too
     ): ...
+
+set_exc_info: _Processor
