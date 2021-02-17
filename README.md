@@ -12,6 +12,10 @@ having to defer to standard library logging.
 * [TimezoneAwareTimeStamper](./structlog_overtime/timestamper.py): make your timestamps explicitly include a timezone
 * [noop](./structlog_overtime/noop.py): a processor that gloriously does nothing
 
+## The name?
+
+https://www.youtube.com/watch?v=GnEmD17kYsE
+
 ## Development
 
 ### Running the tests
