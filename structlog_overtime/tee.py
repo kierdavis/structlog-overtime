@@ -1,4 +1,4 @@
-from typing import Any, Sequence, Type
+from typing import Any, List, Sequence, Type
 
 import structlog
 from dataclasses import dataclass, field
@@ -19,7 +19,7 @@ class TeeOutput:
 
 
 class TeeLogger:
-    def __init__(self, *destinations: structlog.BoundLogger):
+    def __init__(self, destinations: List[structlog.BoundLogger]):
         self.destinations = destinations
 
     def __getattr__(self, method_name: str) -> Any:
@@ -46,7 +46,7 @@ class TeeLoggerFactory:
 
     def __call__(self, *args: Any) -> TeeLogger:
         return TeeLogger(
-            *(output._construct_bound_logger(*args) for output in self.outputs)
+            [output._construct_bound_logger(*args) for output in self.outputs]
         )
 
 
