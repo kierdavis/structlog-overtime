@@ -1,5 +1,5 @@
 import datetime
-from typing import Any, Callable, Dict
+from typing import Callable
 
 import structlog
 
@@ -31,9 +31,9 @@ class TimezoneAwareTimeStamper:
 
     def __call__(
         self,
-        logger: "structlog._UnderlyingLogger",
+        logger: structlog.types.WrappedLogger,
         method_name: str,
-        event_dict: Dict[str, Any],
-    ) -> "structlog._ProcessorReturnType":
+        event_dict: structlog.types.EventDict,
+    ) -> structlog.types.EventDict:
         event_dict[self.key] = self.now().strftime(self.format)
         return event_dict

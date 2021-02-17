@@ -1,5 +1,5 @@
 import functools
-from typing import Any, Dict, List, Tuple, Type
+from typing import Any, Callable, List, Tuple, Type
 
 import structlog
 from dataclasses import dataclass, field
@@ -44,7 +44,7 @@ class MockLogRecord:
     """
 
     method_name: str
-    event: Dict[str, Any] = field(default_factory=dict)
+    event: structlog.types.EventDict = field(default_factory=dict)
     get_logger_args: Tuple[Any, ...] = ()
     underlying_logger_args: Tuple[Any, ...] = ()
 
@@ -76,10 +76,10 @@ class MockLoggerFactory:
 
     records: List[MockLogRecord] = field(default_factory=list)
 
-    def __call__(self, *args: Any) -> "structlog._UnderlyingLogger":
+    def __call__(self, *args: Any) -> structlog.types.WrappedLogger:
         return MockLogger(records=self.records, get_logger_args=args)
 
 
 _ensure_logger_factory_implements_protocol: Type[
-    "structlog._LoggerFactory"
+    Callable[..., structlog.types.WrappedLogger]
 ] = MockLoggerFactory

@@ -23,7 +23,7 @@ setup(
     python_requires=">= 3.6",
     install_requires=[
         "dataclasses; python_version < '3.7'",
-        "structlog",
+        "structlog >= 20.2.0",
         # ...
     ],
     extras_require={

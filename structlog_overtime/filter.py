@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict
+from typing import Callable
 
 import structlog
 
@@ -26,10 +26,10 @@ class FilterMethods:
 
     def __call__(
         self,
-        logger: "structlog._UnderlyingLogger",
+        logger: structlog.types.WrappedLogger,
         method_name: str,
-        event_dict: Dict[str, Any],
-    ) -> "structlog._ProcessorReturnType":
+        event_dict: structlog.types.EventDict,
+    ) -> structlog.types.EventDict:
         if self.predicate(method_name):
             return event_dict
         else:
@@ -65,10 +65,10 @@ class FilterKeys:
 
     def __call__(
         self,
-        logger: "structlog._UnderlyingLogger",
+        logger: structlog.types.WrappedLogger,
         method_name: str,
-        event_dict: Dict[str, Any],
-    ) -> "structlog._ProcessorReturnType":
+        event_dict: structlog.types.EventDict,
+    ) -> structlog.types.EventDict:
         for key in set(event_dict.keys()):
             if not self.predicate(key):
                 del event_dict[key]

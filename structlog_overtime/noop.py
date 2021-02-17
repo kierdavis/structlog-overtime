@@ -1,15 +1,13 @@
-from typing import Any, Dict
-
 import structlog
 
 __all__ = ["noop"]
 
 
 def noop(
-    logger: "structlog._UnderlyingLogger",
+    logger: structlog.types.WrappedLogger,
     method_name: str,
-    event_dict: Dict[str, Any],
-) -> "structlog._ProcessorReturnType":
+    event_dict: structlog.types.EventDict,
+) -> structlog.types.EventDict:
     """
     No operation (a processor that returns the event dictionary unchanged).
     """

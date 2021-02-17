@@ -13,7 +13,7 @@ def test_only_methods() -> None:
     logger = structlog.get_logger()
     logger.info("hello world")
     logger.error("hello world")
-    logger.warn("hello world")
+    logger.warning("hello world")
     logger.critical("hello world")
     compare(
         dest.records,
@@ -37,7 +37,7 @@ def test_exclude_methods() -> None:
     logger = structlog.get_logger()
     logger.info("hello world")
     logger.error("hello world")
-    logger.warn("hello world")
+    logger.warning("hello world")
     logger.critical("hello world")
     compare(
         dest.records,
@@ -46,7 +46,7 @@ def test_exclude_methods() -> None:
                 method_name="info", event={"event": "hello world"}
             ),
             structlog_overtime.MockLogRecord(
-                method_name="warn", event={"event": "hello world"}
+                method_name="warning", event={"event": "hello world"}
             ),
         ],
     )

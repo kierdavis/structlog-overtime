@@ -1,4 +1,4 @@
-from typing import Any, List, Sequence, Type
+from typing import Any, Callable, List, Sequence, Type, cast
 
 import structlog
 from dataclasses import dataclass, field
@@ -15,13 +15,16 @@ class TeeOutput:
     from the underlying factory.
     """
 
-    logger_factory: "structlog._LoggerFactory"
-    processors: Sequence["structlog._Processor"] = field(default_factory=list)
+    logger_factory: Callable[..., structlog.types.WrappedLogger]
+    processors: Sequence[structlog.types.Processor] = field(default_factory=list)
 
     def _construct_bound_logger(self, *args: Any) -> structlog.BoundLogger:
-        return structlog.wrap_logger(
-            logger=self.logger_factory(*args),
-            processors=self.processors,
+        return cast(
+            structlog.BoundLogger,
+            structlog.wrap_logger(
+                logger=self.logger_factory(*args),
+                processors=self.processors,
+            ),
         )
 
 
@@ -44,7 +47,7 @@ class TeeLogger:
         return f
 
 
-_ensure_logger_implements_protocol: Type["structlog._UnderlyingLogger"] = TeeLogger
+_ensure_logger_implements_protocol: Type[structlog.types.WrappedLogger] = TeeLogger
 
 
 class TeeLoggerFactory:
@@ -90,7 +93,7 @@ class TeeLoggerFactory:
 
 
 _ensure_logger_factory_implements_protocol: Type[
-    "structlog._LoggerFactory"
+    Callable[..., structlog.types.WrappedLogger]
 ] = TeeLoggerFactory
 
 

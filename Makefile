@@ -3,9 +3,9 @@ PACKAGE_PATH := structlog_overtime
 # All paths containing Python code to typecheck
 TYPECHECKED_PYTHON_PATHS := $(PACKAGE_PATH) tests
 # All paths containing Python code to format:
-FORMATTED_PYTHON_PATHS := $(PACKAGE_PATH) tests stubs setup.py
+FORMATTED_PYTHON_PATHS := $(PACKAGE_PATH) tests setup.py
 # All paths containing Python code to lint:
-LINTED_PYTHON_PATHS := $(PACKAGE_PATH) tests stubs setup.py
+LINTED_PYTHON_PATHS := $(PACKAGE_PATH) tests setup.py
 
 all: typecheck test format lint
 
