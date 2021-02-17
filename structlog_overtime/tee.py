@@ -3,7 +3,7 @@ from typing import Any, List, Sequence, Type
 import structlog
 from dataclasses import dataclass, field
 
-__all__ = ["TeeOutput", "TeeLoggerFactory"]
+__all__ = ["TeeOutput", "TeeLoggerFactory", "ConfigurationError"]
 
 
 @dataclass
@@ -25,7 +25,7 @@ class TeeLogger:
     def __getattr__(self, method_name: str) -> Any:
         def f(*args_from_renderer: Any, **event_dict: Any) -> None:
             if len(args_from_renderer):
-                raise NotImplementedError(
+                raise ConfigurationError(
                     "TeeLoggerFactory cannot operate on events that have "
                     "already been processed by a Renderer. Please place "
                     "the Renderer in the per-output processor lists instead "
@@ -53,3 +53,7 @@ class TeeLoggerFactory:
 _ensure_logger_factory_implements_protocol: Type[
     "structlog._LoggerFactory"
 ] = TeeLoggerFactory
+
+
+class ConfigurationError(Exception):
+    pass
