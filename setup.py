@@ -33,6 +33,7 @@ setup(
             "pytest",
             "pytest-cov",
             "testfixtures",
+            "wheel",
             # ...
         ],
     },
