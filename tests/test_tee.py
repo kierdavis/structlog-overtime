@@ -1,6 +1,7 @@
 from io import StringIO
 
 import structlog
+from pytest import raises
 from testfixtures import compare  # type: ignore
 
 import structlog_overtime
@@ -64,3 +65,19 @@ def test_print_to_buffer() -> None:
             ),
         ),
     )
+
+
+def test_renderer_before_tee() -> None:
+    factory1 = structlog_overtime.MockLoggerFactory()
+    factory2 = structlog_overtime.MockLoggerFactory()
+    structlog.configure(
+        processors=[
+            structlog.dev.ConsoleRenderer(colors=False),
+        ],
+        logger_factory=structlog_overtime.TeeLoggerFactory(
+            structlog_overtime.TeeOutput(logger_factory=factory1),
+            structlog_overtime.TeeOutput(logger_factory=factory2),
+        ),
+    )
+    with raises(structlog_overtime.ConfigurationError):
+        structlog.get_logger().info("hello world", foo="bar")
