@@ -1,0 +1,11 @@
+carthorse:
+  version-from: setup.py
+  tag-format: v{version}
+  when:
+  - version-not-tagged
+  actions:
+  - run: "rm -rf dist/"
+  - run: "python setup.py bdist_wheel"
+  - run: "python setup.py sdist"
+  - run: "twine upload dist/*"
+  - create-tag

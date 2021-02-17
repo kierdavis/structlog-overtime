@@ -29,3 +29,9 @@ source .venv/bin/activate
 pip install -e '.[dev]'
 pytest
 ```
+
+### Making a release
+
+1.  Bump the version number in `setup.py`
+2.  Commit the version nummber change: `git commit`
+3.  Publish to PyPI and create git tag: `carthorse --config carthorse.yaml`

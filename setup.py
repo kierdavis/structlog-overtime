@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="structlog-overtime",
-    version="0.3.4",
+    version="1.0",
     description="Miscellaneous utilities for structlog",
     long_description=Path(__file__).resolve().parent.joinpath("README.md").read_text(),
     long_description_content_type="text/markdown",
@@ -29,7 +29,7 @@ setup(
     extras_require={
         "dev": [
             "black",
-            "devpi-client",
+            "carthorse",
             "flake8",
             "isort",
             "mypy",
@@ -37,6 +37,7 @@ setup(
             "pytest-cov",
             "setuptools>=38.6.0",  # for long_description_content_type support
             "testfixtures",
+            "twine",
             "wheel",
         ],
     },
