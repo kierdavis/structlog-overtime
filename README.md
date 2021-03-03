@@ -35,3 +35,7 @@ pytest
 1.  Bump the version number in `setup.py`
 2.  Commit the version nummber change: `git commit`
 3.  Publish to PyPI and create git tag: `carthorse --config carthorse.yaml`
+
+## License
+
+[public domain](./UNLICENSE)
